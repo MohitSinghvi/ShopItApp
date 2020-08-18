@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OrderProduct">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:background="@color/buttonColor"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imageButton5"
+                android:layout_width="68dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@color/buttonColor"
+                android:onClick="goBack"
+                app:srcCompat="@drawable/backarrow" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="275dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/buttonColor"
+                android:contentDescription="@string/product_image"
+                app:srcCompat="@drawable/shopit" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Product Name:  " />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="85dp"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Price:" />
+
+            <TextView
+                android:id="@+id/prod_price"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Co-ordinates" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/coordinates"
+            android:layout_width="wrap_content"
+            android:layout_height="76dp"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/mapbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/buttonColor"
+            android:text="My location"
+            android:textColor="@color/buttonFontColor" />
+
+        <Button
+            android:id="@+id/placeorder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/buttonColor"
+            android:onClick="placeOrder"
+            android:text="Place Order"
+            android:textColor="@color/buttonFontColor" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
