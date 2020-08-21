@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
+import com.ortiz.touchview.TouchImageView;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ public class ProductImageAdapter extends RecyclerView.Adapter<ProductImageAdapte
     Context context;
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        public ImageView imageView;
+        public TouchImageView imageView;
         public TextView textView;
         public MyViewHolder(@NonNull View v) {
             super(v);
@@ -62,16 +63,16 @@ public class ProductImageAdapter extends RecyclerView.Adapter<ProductImageAdapte
                     public void onSuccess(byte[] bytes) {
 //                        Toast.makeText(context, "Passed!!!!", Toast.LENGTH_SHORT).show();
                         holder.imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-                        holder.imageView.setOnTouchListener(new View.OnTouchListener() {
-                            @Override
-                            public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                                view.setScaleX(2);
-                                view.setScaleY(2);
-                                view.setMinimumHeight(600);
-                                return true;
-                            }
-                        });
+//                        holder.imageView.setOnTouchListener(new View.OnTouchListener() {
+//                            @Override
+//                            public boolean onTouch(View view, MotionEvent motionEvent) {
+//
+//                                view.setScaleX(2);
+//                                view.setScaleY(2);
+//                                view.setMinimumHeight(600);
+//                                return true;
+//                            }
+//                        });
 //                        holder.imageView.
 
                     }
