@@ -55,18 +55,26 @@ public class ProductCardFragment extends Fragment {
 
 
         StorageReference image=fh.getProductImgRef().child(prod_id+"/"+getArguments().getString("prod_name")+"0");
-        image.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-
-                byte[] prod_img=bytes;
-                prod_image.setImageBitmap(BitmapFactory.decodeByteArray(prod_img, 0, prod_img.length));
 
 
-//                Toast.makeText(getContext(), "YOYOYO", Toast.LENGTH_SHORT).show();
-//                                        prod_image.setImageBitmap(BitmapFactory.decodeByteArray(prod_img, 0, prod_img.length));
-            }
-        });
+//Getting images using glide
+        GlideApp.with(getContext())
+                .load(image)
+                .into( prod_image);
+
+//Old way of getting images.
+//        image.getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//            @Override
+//            public void onSuccess(byte[] bytes) {
+//
+//                byte[] prod_img=bytes;
+//                prod_image.setImageBitmap(BitmapFactory.decodeByteArray(prod_img, 0, prod_img.length));
+//
+//
+////                Toast.makeText(getContext(), "YOYOYO", Toast.LENGTH_SHORT).show();
+////                                        prod_image.setImageBitmap(BitmapFactory.decodeByteArray(prod_img, 0, prod_img.length));
+//            }
+//        });
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
