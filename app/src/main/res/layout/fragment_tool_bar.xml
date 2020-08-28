@@ -17,10 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/buttonColor"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
+        android:elevation="5dp"
 
 
-        android:elevation="10dp">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 
         <LinearLayout
@@ -52,7 +52,7 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/toolbar_search_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
@@ -70,7 +70,7 @@
                 android:src="@android:drawable/ic_btn_speak_now" />
 
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/toolbar_cart_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="right"

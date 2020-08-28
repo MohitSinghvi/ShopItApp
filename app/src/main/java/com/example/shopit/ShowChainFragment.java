@@ -2,10 +2,12 @@ package com.example.shopit;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -16,9 +18,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,7 +43,7 @@ import java.util.Objects;
  * Use the {@link ShowChainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ShowChainFragment extends Fragment {
+public class ShowChainFragment extends Fragment implements ProductImageAdapter.ItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,8 +54,8 @@ public class ShowChainFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    TextView prod_name_text_view, prod_brand_text_view,prod_desc_tv,prod_category_tv;
-
+    TextView prod_name_text_view, prod_brand_text_view,prod_desc_tv,prod_category_tv,prod_cost_tv,show_cancel_price,rating_val;
+    RatingBar show_rating ;
 
     ArrayList<StorageReference> image_paths = new ArrayList<>();
     Button previous_button,forward_button;
@@ -108,9 +112,11 @@ public class ShowChainFragment extends Fragment {
 
 
 
+
 //        setImage(0);
 //        Toast.makeText(getContext(), getArguments().getString("prod_id"), Toast.LENGTH_SHORT).show();
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,7 +127,12 @@ public class ShowChainFragment extends Fragment {
         prod_brand_text_view=view.findViewById(R.id.show_fragment_prod_brand);
         prod_desc_tv=view.findViewById(R.id.show_prod_description);
         prod_category_tv=view.findViewById(R.id.show_prod_category);
-
+        prod_cost_tv=view.findViewById(R.id.show_prod_cost);
+        show_cancel_price=view.findViewById(R.id.show_cancel_price);
+        show_cancel_price.setText("99,000");
+        show_cancel_price.setPaintFlags(show_cancel_price.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+        show_rating=view.findViewById(R.id.show_prod_rating);
+        rating_val=view.findViewById(R.id.rating_val);
 
         CollectionReference prod_ref = fh.getProdRef();
         prod_ref.document(prod_id).get()
@@ -133,8 +144,11 @@ public class ShowChainFragment extends Fragment {
                             prod_brand_text_view.setText("by "+(String)product_info.get("prod_brand"));
                             prod_name_text_view.setText((String)product_info.get("prod_name"));
                             prod_desc_tv.setText((String)product_info.get("prod_description"));
-                            prod_category_tv.setText((String)product_info.get("prod_category"));
-
+                            prod_category_tv.setText("Category: "+(String)product_info.get("prod_category"));
+                            prod_cost_tv.setText(String.format("%,d",product_info.get("prod_price")));
+                            double rating_value=(double) product_info.get("rating");
+                            show_rating.setRating((float) rating_value);
+                            rating_val.setText(""+product_info.get("rating"));
                         }
                     }
                 });
@@ -146,14 +160,19 @@ public class ShowChainFragment extends Fragment {
 
     }
 
+
     @Override
     public void onResume() {
+        loadViewPager();
+        MainActivity.state="other";
         super.onResume();
 
     }
     public void loadViewPager(){
         image_viewPager = getView().findViewById(R.id.image_view_pager);
         productImageAdapter = new ProductImageAdapter(getContext(),image_paths);
+
+        productImageAdapter.addItemClickListener(this);
         image_viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         image_viewPager.setAdapter(productImageAdapter);
 
@@ -226,6 +245,21 @@ public class ShowChainFragment extends Fragment {
 
 //                        setImageSize();
 
+
+
+
+
+
+
+//                        GlideApp.with(getContext())
+//                                .load(image_paths.get(0))
+//                                .into((ImageView) getView().findViewById(R.id.test_image_view));
+
+
+
+
+
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -241,6 +275,24 @@ public class ShowChainFragment extends Fragment {
 //        display_image.onTouchEvent()
 //        mScaleGestureDetector = new ScaleGestureDetector(this,new MainActivity.ScaleListener());
 
+
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        ViewImageFragment viewImageFragment = new ViewImageFragment();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+
+        bundle.putString("prod_id",prod_id);
+        bundle.putString("prod_name",prod_name_text_view.getText().toString());
+        bundle.putInt("image_pos",position);
+
+        viewImageFragment.setArguments(bundle);
+//        Toast.makeText(getActivity().getBaseContext(), prod_id+", "+prod_name_text_view.getText().toString()+", "+position , Toast.LENGTH_SHORT).show();
+        transaction.replace(R.id.main_page_layout,viewImageFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
 
     }
 

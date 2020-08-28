@@ -23,6 +23,7 @@
 <!--        app:layout_constraintTop_toTopOf="parent">-->
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:onClick="hideMenu"
@@ -40,32 +41,37 @@
                 />
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="@color/buttonFontColor"
-                android:orientation="horizontal">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="5dp"-->
+<!--                android:background="@color/buttonFontColor"-->
+<!--                android:orientation="horizontal">-->
 
-                <EditText
-                    android:id="@+id/search_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="75"
-                    android:ems="10"
-                    android:hint="@string/search"
-                    android:inputType="textPersonName" />
+<!--                <EditText-->
+<!--                    android:id="@+id/search_text"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="75"-->
+<!--                    android:ems="10"-->
+<!--                    android:hint="@string/search"-->
+<!--                    android:inputType="textPersonName" />-->
 
-                <ImageButton
-                    android:id="@+id/search_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="25"
-                    android:background="@color/buttonColor"
-                    android:onClick="search_product"
-                    app:srcCompat="@drawable/search_icon" />
-            </LinearLayout>
+<!--                <ImageButton-->
+<!--                    android:id="@+id/search_button"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="25"-->
+<!--                    android:background="@color/buttonColor"-->
+<!--                    android:onClick="search_product"-->
+<!--                    app:srcCompat="@drawable/search_icon" />-->
+<!--            </LinearLayout>-->
 
+
+<FrameLayout
+    android:id="@+id/main_page_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
             <ScrollView
                 android:id="@+id/main_page_scroll_view"
                 android:layout_width="match_parent"
@@ -77,9 +83,11 @@
                     android:id="@+id/prod_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="1dp"
                     android:orientation="vertical" />
             </ScrollView>
+</FrameLayout>
+<!--            </LinearLayout>-->
 
         </LinearLayout>
 

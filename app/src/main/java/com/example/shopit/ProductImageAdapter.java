@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,9 +27,16 @@ public class ProductImageAdapter extends RecyclerView.Adapter<ProductImageAdapte
 
     ArrayList<StorageReference> image_paths;
     Context context;
+    ItemClickListener mitemClickListener;
+
+    public void addItemClickListener(ItemClickListener itemClickListener) {
+        mitemClickListener=itemClickListener;
+    }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-        public TouchImageView imageView;
+//        public TouchImageView imageView;
+        public ImageView imageView;
         public TextView textView;
         public MyViewHolder(@NonNull View v) {
             super(v);
@@ -55,40 +63,68 @@ public class ProductImageAdapter extends RecyclerView.Adapter<ProductImageAdapte
 
 
     @Override
-    public void onBindViewHolder(@NonNull final ProductImageAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ProductImageAdapter.MyViewHolder holder, final int position) {
 //        Toast.makeText(context, "Oye Oye Oye!!!!", Toast.LENGTH_SHORT).show();
-        image_paths.get(position).getBytes(1024*1024)
-                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-//                        Toast.makeText(context, "Passed!!!!", Toast.LENGTH_SHORT).show();
-                        holder.imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-//                        holder.imageView.setOnTouchListener(new View.OnTouchListener() {
-//                            @Override
-//                            public boolean onTouch(View view, MotionEvent motionEvent) {
-//
-//                                view.setScaleX(2);
-//                                view.setScaleY(2);
-//                                view.setMinimumHeight(600);
-//                                return true;
-//                            }
-//                        });
-//                        holder.imageView.
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(context, "Failed!!!!", Toast.LENGTH_SHORT).show();
-                    }
-                });
+
+        GlideApp.with(context)
+                .load(image_paths.get(position))
+                .into( holder.imageView);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mitemClickListener!=null){
+                    mitemClickListener.onItemClick(position);
+                }
+            }
+        });
+//        holder.imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ViewImageFragment viewImageFragment = new ViewImageFragment();
+//                FragmentTransaction fragmentTransaction =
+//            }
+//        });
+
+
+
+
+
+
+
+//        image_paths.get(position).getBytes(1024*1024)
+//                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//                    @Override
+//                    public void onSuccess(byte[] bytes) {
+////                        Toast.makeText(context, "Passed!!!!", Toast.LENGTH_SHORT).show();
+//                        holder.imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+////                        holder.imageView.setOnTouchListener(new View.OnTouchListener() {
+////                            @Override
+////                            public boolean onTouch(View view, MotionEvent motionEvent) {
+////
+////                                view.setScaleX(2);
+////                                view.setScaleY(2);
+////                                view.setMinimumHeight(600);
+////                                return true;
+////                            }
+////                        });
+////                        holder.imageView.
+//
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(context, "Failed!!!!", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 
 
 
 
 //        holder.textView.setText(""+position);
     }
+
 
     ProductImageAdapter(){
 
@@ -98,4 +134,9 @@ public class ProductImageAdapter extends RecyclerView.Adapter<ProductImageAdapte
 
         return image_paths.size();
     }
+
+    public interface ItemClickListener{
+        void onItemClick(int position);
+    }
+
 }

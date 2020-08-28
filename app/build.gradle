@@ -42,6 +42,7 @@ dependencies {
 
 
     implementation 'com.google.firebase:firebase-firestore:21.5.0'
+    implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
 
 
     implementation "androidx.navigation:navigation-fragment:$nav_version"
@@ -56,5 +57,16 @@ dependencies {
     implementation 'com.github.MikeOrtiz:TouchImageView:3.0.1'
 //    implementation 'com.github.MikeOrtiz:TouchImageView:1.4.1' // Support Lib
 
+
+
+    
+    implementation ("com.github.bumptech.glide:glide:4.9.0") {
+        exclude group: "com.android.support"
+    }
+    annotationProcessor 'androidx.annotation:annotation:1.1.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    implementation ("com.github.bumptech.glide:glide:4.9.0@aar") {
+        transitive = true
+    }
 
 }

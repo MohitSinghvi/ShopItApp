@@ -31,6 +31,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Registry;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,6 +49,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 //import LayoutParams;
@@ -58,11 +63,13 @@ public class MainActivity extends AppCompatActivity implements ToolBarFragment.O
     private static final String TAG = "MainActivity";
     String user_id;
     DatabaseHelper myDB;
-    String username;
+     String username;
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
     NavigationView navigationView ;
+    static String state;
 
+    boolean  server_prod_added;
     Float scale = 1f;
     Matrix matrix = new Matrix();
     private ScaleGestureDetector mScaleGestureDetector;
@@ -77,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements ToolBarFragment.O
         if(drawer.isDrawerOpen(GravityCompat.START)){
 //            drawer.closeDrawer(GravityCompaty.St);
         }
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
         super.onBackPressed();
     }
 
@@ -87,11 +97,28 @@ public class MainActivity extends AppCompatActivity implements ToolBarFragment.O
 
 
 
-        initialize();
-        diplayServerProducts();
+
 //        displayproducts(username,query,search);
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(state==null || state.equals("home") ){
+            initialize();
+            diplayServerProducts();
+        }
+
+
+
+    }
+
+    public void goHome(){
+
+        diplayServerProducts();
     }
 
 
@@ -131,9 +158,9 @@ public class MainActivity extends AppCompatActivity implements ToolBarFragment.O
 
     public void sendMessage(View view){
         Intent intent = new Intent(this,DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.search_text);
-        String message=editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE,message );
+//        EditText editText = (EditText) findViewById(R.id.search_text);
+//        String message=editText.getText().toString();
+//        intent.putExtra(EXTRA_MESSAGE,message );
         startActivity(intent);
     }
     public void goToLoginPage(View view){
@@ -183,14 +210,14 @@ public class MainActivity extends AppCompatActivity implements ToolBarFragment.O
         Intent intent =new Intent(this,showOrders.class)    ;
         startActivity(intent);
     }
-    public void search_product(View view){
-        TextView searchbox=findViewById(R.id.search_text);
-        String search = searchbox.getText().toString()+"'";
-        String query="select * from products where prod_name ='"+search;
-        Intent intent = new Intent(this,MainActivity.class);
-        intent.putExtra("search",query);
-        startActivity(intent);
-    }
+//    public void search_product(View view){
+//        TextView searchbox=findViewById(R.id.search_text);
+//        String search = searchbox.getText().toString()+"'";
+//        String query="select * from products where prod_name ='"+search;
+//        Intent intent = new Intent(this,MainActivity.class);
+//        intent.putExtra("search",query);
+//        startActivity(intent);
+//    }
     private void setMargins (View view, int left, int top, int right, int bottom) {
         if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
@@ -198,7 +225,18 @@ public class MainActivity extends AppCompatActivity implements ToolBarFragment.O
             view.requestLayout();
         }
     }
+//    public void LoadImageFragment(View view){
+//        ViewImageFragment viewImageFragment = new ViewImageFragment();
+////        Bundle bundle = new Bundle();
+////        ((ImageView)view).
+////        bundle.putByteArray();
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.replace(R.id.prod_layout,viewImageFragment);
+//        transaction.addToBackStack(null);
+//        transaction.commit();
+//    }
     public void diplayServerProducts(){
+        server_prod_added=true;
         final FireStoreHelper fh = new FireStoreHelper();
         CollectionReference prod_ref=fh.getProdRef();
         prod_ref.get()
@@ -228,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements ToolBarFragment.O
                                 bundle.putString("prod_id",prod_id);
                                 bundle.putString("prod_brand",(String)product_map.get("prod_brand"));
                                 bundle.putString("prod_price",""+product_map.get("prod_price"));
+                                bundle.putDouble("rating",(double)product_map.get("rating"));
                                 StorageReference image=fh.getProductImgRef().child(prod_id+"/"+product_map.get("prod_name")+"0");
 //
 //
